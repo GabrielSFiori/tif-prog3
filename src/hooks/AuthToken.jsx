@@ -1,5 +1,6 @@
 export async function fetchAuthToken(username, password) {
   const urlBase = "https://sandbox.academiadevelopers.com/api-auth/";
+
   try {
     const response = await fetch(urlBase, {
       method: "POST",
@@ -18,8 +19,9 @@ export async function fetchAuthToken(username, password) {
       );
     }
 
-    return await response.json();
+    return await response.json(); // Devuelve el token o la respuesta de autenticación
   } catch (error) {
-    throw new Error(error.message);
+    // Propaga el error con un mensaje claro
+    throw new Error(`Authentication failed: ${error.message}`);
   }
 }
