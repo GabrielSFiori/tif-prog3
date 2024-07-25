@@ -1,70 +1,105 @@
-import React, { useState, useEffect } from "react";
+export const fetchArticles = async () => {
+  const token = localStorage.getItem("authToken");
 
-const ConnApi = () => {
-  const urlBase = "https://sandbox.academiadevelopers.com/infosphere/articles/";
-  const [articles, setArticles] = useState([]);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    async function getArticles() {
-      try {
-        const response = await fetch(urlBase);
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        const data = await response.json();
-        setArticles(data);
-      } catch (error) {
-        setError(error.message);
-      }
+  const response = await fetch(
+    "https://sandbox.academiadevelopers.com/infosphere/articles/",
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token ? `Token ${token}` : "",
+      },
     }
-    getArticles();
-  }, []);
+  );
 
-  if (error) {
-    return <div>Error: {error}</div>;
+  if (!response.ok) {
+    throw new Error("Error al obtener los artículos");
   }
 
-  return (
-    <div className="container">
-      {articles.length > 0 ? (
-        articles.map((article, index) => (
-          <div className="card" key={index} style={{ marginBottom: "1rem" }}>
-            <header className="card-header">
-              <p className="card-header-title">{article.title}</p>
-              <button className="card-header-icon" aria-label="more options">
-                <span className="icon">
-                  <i className="fas fa-angle-down" aria-hidden="true"></i>
-                </span>
-              </button>
-            </header>
-            <div className="card-content">
-              <div className="content">
-                {article.content}
-                <br />
-                <time dateTime={article.created_at}>
-                  {new Date(article.created_at).toLocaleString()}
-                </time>
-              </div>
-            </div>
-            <footer className="card-footer">
-              <a href="#" className="card-footer-item">
-                Save
-              </a>
-              <a href="#" className="card-footer-item">
-                Edit
-              </a>
-              <a href="#" className="card-footer-item">
-                Delete
-              </a>
-            </footer>
-          </div>
-        ))
-      ) : (
-        <div>Loading...</div>
-      )}
-    </div>
-  );
+  const data = await response.json();
+  return data;
 };
 
-export default ConnApi;
+export async function fetchArticle(id) {
+  const urlBase = `https://sandbox.academiadevelopers.com/infosphere/articles/${id}`;
+  try {
+    const response = await fetch(urlBase);
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    return await response.json();
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
+
+// src/hooks/ConnApi.js
+export const fetchCreateArticle = async (article) => {
+  const token = localStorage.getItem("authToken");
+
+  const response = await fetch(
+    "https://sandbox.academiadevelopers.com/infosphere/articles/",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token ? `Token ${token}` : "",
+      },
+      body: JSON.stringify(article),
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error("Error al crear el artículo");
+  }
+
+  const data = await response.json();
+  return data;
+};
+
+export async function fetchDetailArticle(id) {
+  const urlBase = `https://sandbox.academiadevelopers.com/infosphere/articles/${id}`;
+  try {
+    const response = await fetch(urlBase);
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    return await response.json();
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
+
+export async function fetchUpdateArticle(id, article) {
+  const urlBase = `https://sandbox.academiadevelopers.com/infosphere/articles/${id}`;
+  try {
+    const response = await fetch(urlBase, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(article),
+    });
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    return await response.json();
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
+
+export async function fetchDeleteArticle(id) {
+  const urlBase = `https://sandbox.academiadevelopers.com/infosphere/articles/${id}`;
+  try {
+    const response = await fetch(urlBase, {
+      method: "DELETE",
+    });
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    return await response.json();
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
