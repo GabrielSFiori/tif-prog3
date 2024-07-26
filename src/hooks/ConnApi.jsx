@@ -103,3 +103,17 @@ export async function fetchDeleteArticle(id) {
     throw new Error(error.message);
   }
 }
+
+export async function fetchCategories() {
+  const urlBase =
+    "https://sandbox.academiadevelopers.com/infosphere/categories/";
+  try {
+    const response = await fetch(urlBase);
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    return await response.json();
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
