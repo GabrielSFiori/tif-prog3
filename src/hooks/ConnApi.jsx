@@ -20,7 +20,7 @@ export const fetchArticles = async () => {
   return data;
 };
 
-export async function fetchArticle(id) {
+export async function fetchArticleById(id) {
   const urlBase = `https://sandbox.academiadevelopers.com/infosphere/articles/${id}`;
   try {
     const response = await fetch(urlBase);
