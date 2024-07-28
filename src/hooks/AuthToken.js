@@ -1,4 +1,4 @@
-export async function fetchAuthToken(username, password) {
+async function fetchAuthToken(username, password) {
   const urlBase = "https://sandbox.academiadevelopers.com/api-auth/";
 
   try {
@@ -25,3 +25,5 @@ export async function fetchAuthToken(username, password) {
     throw new Error(`Authentication failed: ${error.message}`);
   }
 }
+
+export default fetchAuthToken;

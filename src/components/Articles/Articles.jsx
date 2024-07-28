@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { fetchArticles, fetchCategories } from "../../hooks/ConnApi"; // Asegúrate de que fetchCategories esté disponible
+import { fetchArticles, fetchCategories } from "../../hooks/ConnApi";
 import { useNavigate } from "react-router-dom";
 
 export const Articles = () => {
@@ -13,7 +13,7 @@ export const Articles = () => {
       try {
         const [articlesData, categoriesData] = await Promise.all([
           fetchArticles(),
-          fetchCategories(), // Recupera las categorías
+          fetchCategories(),
         ]);
         setArticles(articlesData);
         setCategories(categoriesData);
@@ -54,7 +54,7 @@ export const Articles = () => {
             >
               <header className="card-header">
                 <p
-                  className="title is-3 is-centered"
+                  className="title is-5 is-centered"
                   style={{
                     justifyContent: "center",
                     textAlign: "center",
@@ -86,11 +86,7 @@ export const Articles = () => {
                   )}
                 </div>
                 <div className="content">
-                  {article.abstract && (
-                    <p>
-                      <strong>Abstract:</strong> {article.abstract}
-                    </p>
-                  )}
+                  {article.abstract && <p>{article.abstract}</p>}
                   <p>{article.content}</p>
                   <br />
                 </div>

@@ -1,35 +1,79 @@
-import React, { useState } from "react";
-import { fetchCreateArticle } from "../../hooks/ConnApi";
+import React, { useState, useEffect } from "react";
+import { fetchCreateArticle, fetchCategories } from "../../hooks/ConnApi";
+import CategoryDropdown from "../Category/CategoryDropdown";
 
 export const NewArticle = () => {
   const [title, setTitle] = useState("");
   const [abstract, setAbstract] = useState("");
   const [content, setContent] = useState("");
   const [caption, setCaption] = useState("");
+  const [image, setImage] = useState(null);
+  const [categories, setCategories] = useState([]);
+  const [selectedCategories, setSelectedCategories] = useState([]);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
 
+  useEffect(() => {
+    async function getCategories() {
+      try {
+        const data = await fetchCategories();
+        setCategories(data);
+      } catch (error) {
+        setError("Failed to load categories: " + error.message);
+      }
+    }
+
+    getCategories();
+  }, []);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const newArticle = {
-      title,
-      abstract,
-      content,
-      caption,
-    };
+
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("abstract", abstract);
+    formData.append("content", content);
+    formData.append("caption", caption);
+    formData.append(
+      "categories",
+      JSON.stringify(selectedCategories.map((category) => category.id))
+    );
+    if (image) {
+      formData.append("image", image);
+    }
 
     try {
-      const data = await fetchCreateArticle(newArticle);
+      const data = await fetchCreateArticle(formData);
       setSuccess("Article created successfully!");
       setTitle("");
       setAbstract("");
       setContent("");
       setCaption("");
+      setImage(null);
+      setSelectedCategories([]);
       setError(null);
     } catch (error) {
       setError("Failed to create article: " + error.message);
       setSuccess(null);
     }
+  };
+
+  const handleCategorySelect = (category) => {
+    setSelectedCategories((prevCategories) => {
+      const isAlreadySelected = prevCategories.some(
+        (selected) => selected.id === category.id
+      );
+
+      if (isAlreadySelected) {
+        return prevCategories.filter((selected) => selected.id !== category.id);
+      } else {
+        return [...prevCategories, category];
+      }
+    });
+  };
+
+  const handleImageChange = (event) => {
+    setImage(event.target.files[0]);
   };
 
   return (
@@ -69,6 +113,25 @@ export const NewArticle = () => {
             onChange={(event) => setContent(event.target.value)}
             required
           ></textarea>
+        </div>
+
+        <div className="field">
+          <label htmlFor="categories">Categories</label>
+          <CategoryDropdown
+            categories={categories}
+            selectedCategories={selectedCategories}
+            onSelectCategory={handleCategorySelect}
+          />
+        </div>
+
+        <div className="field">
+          <label htmlFor="image">Image</label>
+          <input
+            type="file"
+            className="input"
+            id="image"
+            onChange={handleImageChange}
+          />
         </div>
 
         <div className="field">
