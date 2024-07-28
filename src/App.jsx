@@ -4,10 +4,12 @@ import { AboutScreen } from "./routes/AboutScreen";
 import { ContactScreen } from "./routes/ContactScreen";
 import { HomeScreen } from "./routes/HomeScreen";
 import { NavBar } from "./components/NavBar";
-import { Articles } from "./components/Articles/Articles";
+import { Articles } from "./components/Articles";
 import { NewArticle } from "./components/Articles/NewArticle";
 import { Login } from "./components/Login";
 import { AuthProvider } from "./contexts/AuthContext";
+import { ArticleDetail } from "./components/Articles/ArticleDetail";
+import { ArticleEdit } from "./components/Articles/ArticleEdit";
 
 const ProtectedRoute = ({ children }) => {
   const token = localStorage.getItem("authToken");
@@ -22,6 +24,11 @@ export const App = () => {
         <Route path="/" element={<HomeScreen />} />
         <Route path="/about" element={<AboutScreen />} />
         <Route path="/articles" element={<Articles />} />
+        <Route path="/article/:id" element={<ArticleDetail />} />
+        <Route
+          path="/article/edit-article/:id"
+          element={<ArticleEdit />}
+        />{" "}
         <Route
           path="/article/new-article"
           element={

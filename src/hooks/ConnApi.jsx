@@ -20,7 +20,7 @@ export const fetchArticles = async () => {
   return data;
 };
 
-export async function fetchArticle(id) {
+export async function fetchArticleById(id) {
   const urlBase = `https://sandbox.academiadevelopers.com/infosphere/articles/${id}`;
   try {
     const response = await fetch(urlBase);
@@ -33,7 +33,6 @@ export async function fetchArticle(id) {
   }
 }
 
-// src/hooks/ConnApi.js
 export const fetchCreateArticle = async (articleData) => {
   const token = localStorage.getItem("authToken");
 
@@ -56,52 +55,52 @@ export const fetchCreateArticle = async (articleData) => {
   return data;
 };
 
-export async function fetchDetailArticle(id) {
-  const urlBase = `https://sandbox.academiadevelopers.com/infosphere/articles/${id}`;
-  try {
-    const response = await fetch(urlBase);
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-    return await response.json();
-  } catch (error) {
-    throw new Error(error.message);
-  }
-}
-
-export async function fetchUpdateArticle(id, article) {
-  const urlBase = `https://sandbox.academiadevelopers.com/infosphere/articles/${id}`;
-  try {
-    const response = await fetch(urlBase, {
+export const fetchUpdateArticle = async (id, formData) => {
+  const token = localStorage.getItem("authToken");
+  const response = await fetch(
+    `https://sandbox.academiadevelopers.com/infosphere/articles/${id}/`,
+    {
       method: "PUT",
+      body: formData,
       headers: {
-        "Content-Type": "application/json",
+        Authorization: token ? `Token ${token}` : "",
       },
-      body: JSON.stringify(article),
-    });
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
     }
-    return await response.json();
-  } catch (error) {
-    throw new Error(error.message);
-  }
-}
+  );
 
-export async function fetchDeleteArticle(id) {
-  const urlBase = `https://sandbox.academiadevelopers.com/infosphere/articles/${id}`;
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(JSON.stringify(errorData));
+  }
+
+  return response.json();
+};
+
+export const fetchDeleteArticle = async (id) => {
+  const token = localStorage.getItem("authToken");
+
   try {
-    const response = await fetch(urlBase, {
-      method: "DELETE",
-    });
+    const response = await fetch(
+      `https://sandbox.academiadevelopers.com/infosphere/articles/${id}/`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: token ? `Token ${token}` : "",
+        },
+      }
+    );
+
     if (!response.ok) {
-      throw new Error("Network response was not ok");
+      const errorData = await response.text();
+      throw new Error(errorData || "Error al eliminar el artículo");
     }
-    return await response.json();
+
+    return {};
   } catch (error) {
+    console.error("Error al eliminar el artículo:", error);
     throw new Error(error.message);
   }
-}
+};
 
 export async function fetchCategories() {
   const urlBase =
