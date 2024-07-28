@@ -34,7 +34,7 @@ export async function fetchArticle(id) {
 }
 
 // src/hooks/ConnApi.js
-export const fetchCreateArticle = async (article) => {
+export const fetchCreateArticle = async (articleData) => {
   const token = localStorage.getItem("authToken");
 
   const response = await fetch(
@@ -42,10 +42,9 @@ export const fetchCreateArticle = async (article) => {
     {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
         Authorization: token ? `Token ${token}` : "",
       },
-      body: JSON.stringify(article),
+      body: articleData,
     }
   );
 
