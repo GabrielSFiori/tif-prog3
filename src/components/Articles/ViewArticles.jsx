@@ -82,18 +82,13 @@ export const ViewArticles = ({
                 Reactions:{" "}
                 {article.reactions ? article.reactions.join(", ") : "N/A"}
               </p>
+
               <button
-                className="card-footer-item"
+                className="button is-primary mt-1 ml-1"
                 onClick={() => handleReadMore(article.id)}
               >
                 Read More
               </button>
-              <a href="#" className="card-footer-item">
-                Edit
-              </a>
-              <a href="#" className="card-footer-item">
-                Delete
-              </a>
             </footer>
           </div>
         ))

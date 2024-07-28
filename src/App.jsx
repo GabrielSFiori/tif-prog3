@@ -9,6 +9,7 @@ import { NewArticle } from "./components/Articles/NewArticle";
 import { Login } from "./components/Login";
 import { AuthProvider } from "./contexts/AuthContext";
 import { ArticleDetail } from "./components/Articles/ArticleDetail";
+import { ArticleEdit } from "./components/Articles/ArticleEdit";
 
 const ProtectedRoute = ({ children }) => {
   const token = localStorage.getItem("authToken");
@@ -24,6 +25,10 @@ export const App = () => {
         <Route path="/about" element={<AboutScreen />} />
         <Route path="/articles" element={<Articles />} />
         <Route path="/article/:id" element={<ArticleDetail />} />
+        <Route
+          path="/article/edit-article/:id"
+          element={<ArticleEdit />}
+        />{" "}
         <Route
           path="/article/new-article"
           element={

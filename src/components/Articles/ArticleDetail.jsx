@@ -1,6 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
-import { fetchArticleById, fetchCategories } from "../../hooks/ConnApi";
+import {
+  fetchArticleById,
+  fetchCategories,
+  fetchDeleteArticle,
+} from "../../hooks/ConnApi";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../contexts/AuthContext";
 
 export const ArticleDetail = () => {
   const { id } = useParams();
@@ -8,16 +14,39 @@ export const ArticleDetail = () => {
   const [categories, setCategories] = useState([]);
   const [categoriesMap, setCategoriesMap] = useState({});
   const [error, setError] = useState(null);
+  const { auth } = useContext(AuthContext); // Obtener el token desde el contexto
+  const navigate = useNavigate();
+
+  const handleEdit = () => {
+    navigate(`/article/edit-article/${article.id}`);
+  };
+
+  const handleDelete = async () => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this article?"
+    );
+    if (confirmDelete) {
+      try {
+        await fetchDeleteArticle(article.id, auth.token);
+        navigate("/articles");
+      } catch (error) {
+        console.error("Error deleting article:", error);
+        setError(error.message);
+      }
+    }
+  };
+
+  const handleBack = () => {
+    navigate("/articles");
+  };
 
   useEffect(() => {
     async function getArticleAndCategories() {
       try {
-        // Fetch the article
         const articleData = await fetchArticleById(id);
         setArticle(articleData);
         setCategories(articleData.categories);
 
-        // Fetch categories and create a map
         const categoriesData = await fetchCategories();
         const categoriesMap = categoriesData.reduce((map, category) => {
           map[category.id] = category.name;
@@ -77,19 +106,23 @@ export const ArticleDetail = () => {
             Reactions:{" "}
             {article.reactions ? article.reactions.join(", ") : "N/A"}
           </p>
-          <button
-            className="card-footer-item"
-            onClick={() => handleReadMore(article.id)}
-          >
-            Read More
-          </button>
-          <a href="#" className="card-footer-item">
-            Edit
-          </a>
-          <a href="#" className="card-footer-item">
-            Delete
-          </a>
+
+          {auth.isAuthenticated && (
+            <>
+              <a className="card-footer-item" onClick={handleEdit}>
+                Edit
+              </a>
+              <a className="card-footer-item" onClick={handleDelete}>
+                Delete
+              </a>
+            </>
+          )}
         </footer>
+        <div className="has-text-centered">
+          <button className="button is-info is-dark" onClick={handleBack}>
+            Go Back
+          </button>
+        </div>
       </div>
     </div>
   );
