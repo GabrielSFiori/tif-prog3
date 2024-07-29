@@ -10,6 +10,7 @@ import { Login } from "./components/Login";
 import { AuthProvider } from "./contexts/AuthContext";
 import { ArticleDetail } from "./components/Articles/ArticleDetail";
 import { ArticleEdit } from "./components/Articles/ArticleEdit";
+import "./styles.css";
 
 const ProtectedRoute = ({ children }) => {
   const token = localStorage.getItem("authToken");
