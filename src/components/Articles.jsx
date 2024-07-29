@@ -17,7 +17,7 @@ export const Articles = () => {
           fetchCategories(),
         ]);
         setArticles(articlesData);
-        setCategories(categoriesData);
+        setCategories(Array.isArray(categoriesData) ? categoriesData : []);
       } catch (error) {
         if (error.message === "Error al obtener los artículos") {
           navigate("/login");
@@ -33,10 +33,12 @@ export const Articles = () => {
     return <div>Error: {error}</div>;
   }
 
-  const categoriesMap = categories.reduce((map, category) => {
-    map[category.id] = category.name;
-    return map;
-  }, {});
+  const categoriesMap = Array.isArray(categories)
+    ? categories.reduce((map, category) => {
+        map[category.id] = category.name;
+        return map;
+      }, {})
+    : {};
 
   const getCategoryNames = (categories) => {
     return categories.map((id) => categoriesMap[id] || id).join(", ");

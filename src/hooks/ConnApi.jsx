@@ -16,8 +16,7 @@ export const fetchArticles = async () => {
     throw new Error("Error al obtener los artículos");
   }
 
-  const data = await response.json();
-  return data;
+  return await response.json();
 };
 
 export async function fetchArticleById(id) {
