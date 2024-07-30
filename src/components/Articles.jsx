@@ -12,7 +12,7 @@ export const Articles = () => {
   const [nextPage, setNextPage] = useState(null);
   const [prevPage, setPrevPage] = useState(null);
   const navigate = useNavigate();
-  const myRef = useRef(null); // Create the ref
+  const myRef = useRef(null);
 
   useEffect(() => {
     async function getArticlesAndCategories() {
