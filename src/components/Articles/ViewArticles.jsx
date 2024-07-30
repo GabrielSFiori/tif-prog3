@@ -7,6 +7,11 @@ export const ViewArticles = ({
   categories,
   categoriesMap,
   getCategoryNames,
+  onPageChange,
+  prevPage,
+  nextPage,
+  totalCount,
+  currentPage,
 }) => {
   const navigate = useNavigate();
 
@@ -18,8 +23,8 @@ export const ViewArticles = ({
     <div className="container background">
       <div className="columns is-multiline">
         {articles.length > 0 ? (
-          articles.map((article, index) => (
-            <div className="column is-one-third" key={index}>
+          articles.map((article) => (
+            <div className="column is-one-third" key={article.id}>
               <div className="card">
                 <header className="card-header">
                   <p className="title is-5">{article.title}</p>
@@ -100,8 +105,27 @@ export const ViewArticles = ({
             </div>
           ))
         ) : (
-          <div>Loading...</div>
+          <div>No articles found.</div>
         )}
+      </div>
+      <div className="pagination">
+        <button
+          className="button is-info mt-6 mb-6"
+          onClick={() => onPageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+        >
+          Previous
+        </button>
+        <span>
+          Page {currentPage} of {Math.ceil(totalCount / 10)}
+        </span>
+        <button
+          className="button is-info mt-6 mb-6"
+          onClick={() => onPageChange(currentPage + 1)}
+          disabled={currentPage === Math.ceil(totalCount / 10)}
+        >
+          Next
+        </button>
       </div>
     </div>
   );

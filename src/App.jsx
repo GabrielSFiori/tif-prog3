@@ -1,4 +1,3 @@
-// src/App.jsx
 import { Route, Routes, Navigate } from "react-router-dom";
 import { AboutScreen } from "./routes/AboutScreen";
 import { ContactScreen } from "./routes/ContactScreen";

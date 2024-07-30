@@ -30,13 +30,14 @@ export const ArticleEdit = () => {
       try {
         const articleData = await fetchArticleById(id);
         setArticle(articleData);
+
         setFormData({
-          title: articleData.title,
-          abstract: articleData.abstract,
-          content: articleData.content,
-          image: null,
+          title: articleData.title || "",
+          abstract: articleData.abstract || "",
+          content: articleData.content || "",
+          image: null, // Reset image to null on load
           caption: articleData.caption || "",
-          categories: articleData.categories || [],
+          categories: articleData.categories || [], // Assume this is an array of category objects
         });
 
         const categoriesData = await fetchCategories();
@@ -50,18 +51,42 @@ export const ArticleEdit = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
   };
 
-  const handleCategorySelect = (selectedCategories) => {
-    setFormData({ ...formData, categories: selectedCategories });
+  const handleCategorySelect = (category) => {
+    setFormData((prevFormData) => {
+      const isAlreadySelected = prevFormData.categories.some(
+        (selected) => selected.id === category.id
+      );
+
+      if (isAlreadySelected) {
+        return {
+          ...prevFormData,
+          categories: prevFormData.categories.filter(
+            (selected) => selected.id !== category.id
+          ),
+        };
+      } else {
+        return {
+          ...prevFormData,
+          categories: [...prevFormData.categories, category],
+        };
+      }
+    });
   };
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       if (file.type.startsWith("image/") && file.size <= 5 * 1024 * 1024) {
-        setFormData({ ...formData, image: file });
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          image: file,
+        }));
       } else {
         alert("Please select a valid image file (max size: 5MB)");
       }
@@ -78,14 +103,12 @@ export const ArticleEdit = () => {
     formDataToSend.append("caption", formData.caption);
     formDataToSend.append(
       "categories",
-      JSON.stringify(formData.categories.map((cat) => cat.id))
+      JSON.stringify(formData.categories.map((cat) => cat.id)) // Sending only IDs of categories
     );
 
     if (formData.image) {
       formDataToSend.append("image", formData.image);
     }
-
-    console.log("Datos del FormData:", Array.from(formDataToSend.entries()));
 
     try {
       await fetchUpdateArticle(id, formDataToSend);
@@ -116,7 +139,7 @@ export const ArticleEdit = () => {
             className="input"
             id="title"
             name="title"
-            value={formData.title}
+            value={formData.title || ""}
             onChange={handleChange}
             required
           />
@@ -128,7 +151,7 @@ export const ArticleEdit = () => {
             className="textarea"
             id="abstract"
             name="abstract"
-            value={formData.abstract}
+            value={formData.abstract || ""}
             onChange={handleChange}
           ></textarea>
         </div>
@@ -139,7 +162,7 @@ export const ArticleEdit = () => {
             className="textarea"
             id="content"
             name="content"
-            value={formData.content}
+            value={formData.content || ""}
             onChange={handleChange}
             required
           ></textarea>
@@ -181,7 +204,7 @@ export const ArticleEdit = () => {
             className="input"
             id="caption"
             name="caption"
-            value={formData.caption}
+            value={formData.caption || ""}
             onChange={handleChange}
           />
         </div>
