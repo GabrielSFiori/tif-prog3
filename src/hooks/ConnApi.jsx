@@ -118,7 +118,7 @@ export async function fetchCategories() {
     }
 
     const data = await response.json();
-    return data.results; // Extrae los datos desde el campo `results`
+    return data.results;
   } catch (error) {
     throw new Error(error.message);
   }

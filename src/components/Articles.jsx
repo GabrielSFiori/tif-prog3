@@ -56,7 +56,7 @@ export const Articles = () => {
   };
 
   const handlePageChange = (newPage) => {
-    if (newPage > 0 && newPage <= Math.ceil(totalCount / 10)) {
+    if (newPage > 0 && newPage <= Math.ceil(totalCount / 9)) {
       setCurrentPage(newPage);
       myRef.current.scrollIntoView({ behavior: "smooth" });
     }
