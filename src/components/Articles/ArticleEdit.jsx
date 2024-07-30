@@ -7,6 +7,7 @@ import {
 } from "../../hooks/ConnApi";
 import { AuthContext } from "../../contexts/AuthContext";
 import CategoryDropdown from "../Category/CategoryDropdown";
+import "./styles/ArticleEdit.css";
 
 export const ArticleEdit = () => {
   const { id } = useParams();
@@ -35,9 +36,9 @@ export const ArticleEdit = () => {
           title: articleData.title || "",
           abstract: articleData.abstract || "",
           content: articleData.content || "",
-          image: null, // Reset image to null on load
+          image: null,
           caption: articleData.caption || "",
-          categories: articleData.categories || [], // Assume this is an array of category objects
+          categories: articleData.categories || [],
         });
 
         const categoriesData = await fetchCategories();

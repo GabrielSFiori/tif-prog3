@@ -7,6 +7,7 @@ import {
 } from "../../hooks/ConnApi";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
+import "./styles/ArticleDetail.css";
 
 export const ArticleDetail = () => {
   const { id } = useParams();

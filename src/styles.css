@@ -24,6 +24,12 @@ body.light-mode .card {
   border: 1px solid #ddd;
 }
 
+.input .textarea {
+  background-color: #ffffff;
+  color: #363636;
+  border: 1px solid #ddd;
+}
+
 body.dark-mode {
   background-color: #000000;
   color: #ffffff;

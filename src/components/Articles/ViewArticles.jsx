@@ -114,9 +114,12 @@ export const ViewArticles = ({
           onClick={() => onPageChange(currentPage - 1)}
           disabled={currentPage === 1}
         >
-          Previous
+          <span className="icon">
+            <i className="fas fa-arrow-left"></i>
+          </span>
+          <span className="page-info">Previous</span>
         </button>
-        <span>
+        <span className="page-info">
           Page {currentPage} of {Math.ceil(totalCount / 10)}
         </span>
         <button
@@ -124,7 +127,10 @@ export const ViewArticles = ({
           onClick={() => onPageChange(currentPage + 1)}
           disabled={currentPage === Math.ceil(totalCount / 10)}
         >
-          Next
+          <span className="page-info">Next</span>
+          <span className="icon">
+            <i className="fas fa-arrow-right"></i>
+          </span>
         </button>
       </div>
     </div>
