@@ -110,7 +110,7 @@ export const ViewArticles = ({
       </div>
       <div className="pagination">
         <button
-          className="button is-info mt-6 mb-6"
+          className="button is-info mt-3"
           onClick={() => onPageChange(currentPage - 1)}
           disabled={currentPage === 1}
         >
@@ -120,7 +120,7 @@ export const ViewArticles = ({
           Page {currentPage} of {Math.ceil(totalCount / 10)}
         </span>
         <button
-          className="button is-info mt-6 mb-6"
+          className="button is-info mt-3"
           onClick={() => onPageChange(currentPage + 1)}
           disabled={currentPage === Math.ceil(totalCount / 10)}
         >
