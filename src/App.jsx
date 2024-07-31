@@ -1,4 +1,3 @@
-// src/App.jsx
 import { Route, Routes, Navigate } from "react-router-dom";
 import { AboutScreen } from "./routes/AboutScreen";
 import { ContactScreen } from "./routes/ContactScreen";
@@ -10,6 +9,7 @@ import { Login } from "./components/Login";
 import { AuthProvider } from "./contexts/AuthContext";
 import { ArticleDetail } from "./components/Articles/ArticleDetail";
 import { ArticleEdit } from "./components/Articles/ArticleEdit";
+import "./styles.css";
 
 const ProtectedRoute = ({ children }) => {
   const token = localStorage.getItem("authToken");

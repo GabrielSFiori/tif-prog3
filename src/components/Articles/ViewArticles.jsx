@@ -1,11 +1,17 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import "./styles/ArticleDetail.css";
 
 export const ViewArticles = ({
   articles,
   categories,
   categoriesMap,
   getCategoryNames,
+  onPageChange,
+  prevPage,
+  nextPage,
+  totalCount,
+  currentPage,
 }) => {
   const navigate = useNavigate();
 
@@ -14,87 +20,119 @@ export const ViewArticles = ({
   };
 
   return (
-    <div className="container" style={{ marginTop: "3rem" }}>
-      {articles.length > 0 ? (
-        articles.map((article, index) => (
-          <div
-            className="card"
-            key={index}
-            style={{ marginBottom: "1rem", padding: "1rem" }}
-          >
-            <header className="card-header">
-              <p
-                className="title is-5 is-centered"
-                style={{
-                  justifyContent: "center",
-                  textAlign: "center",
-                  width: "100%",
-                }}
-              >
-                {article.title}
-              </p>
-              <button className="card-header-icon" aria-label="more options">
-                <span className="icon">
-                  <i className="fas fa-angle-down" aria-hidden="true"></i>
-                </span>
-              </button>
-            </header>
-            <div className="card-content" style={{ display: "flex" }}>
-              <div className="card-image" style={{ marginRight: "1rem" }}>
-                {article.image && (
-                  <figure className="image">
-                    <img
-                      src={article.image}
-                      alt={article.caption || "Placeholder image"}
+    <div className="container background">
+      <div className="columns is-multiline">
+        {articles.length > 0 ? (
+          articles.map((article) => (
+            <div className="column is-one-third" key={article.id}>
+              <div className="card">
+                <header className="card-header">
+                  <p className="title is-5">{article.title}</p>
+                </header>
+                <div className="card-image-container">
+                  {article.image ? (
+                    <figure className="image-container-view">
+                      <img
+                        src={article.image}
+                        alt={article.caption || "Placeholder image"}
+                      />
+                    </figure>
+                  ) : (
+                    <div className="no-image">No Image</div>
+                  )}
+                </div>
+                <div className="card-content">
+                  <div className="content">
+                    <div
+                      className="content-clamp"
                       style={{
-                        objectFit: "cover",
-                        width: "300px",
-                        height: "300px",
+                        display: "-webkit-box",
+                        WebkitBoxOrient: "vertical",
+                        WebkitLineClamp: "2",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
                       }}
-                    />
-                  </figure>
-                )}
-              </div>
-              <div className="content">
-                {article.abstract && <p>{article.abstract}</p>}
-                <p>{article.content}</p>
-                <br />
+                    >
+                      <p>{article.content}</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="article-details-container">
+                  <ul className="article-details-list">
+                    <li className="article-detail-item">
+                      <p>Author: {article.author}</p>
+                    </li>
+                    <li className="article-detail-item">
+                      <p>Views: {article.view_count}</p>
+                    </li>
+                    <li className="article-detail-item">
+                      <p>
+                        Categories:{" "}
+                        {article.categories
+                          ? getCategoryNames(article.categories)
+                          : "N/A"}
+                      </p>
+                    </li>
+                    <li className="article-detail-item">
+                      <p>
+                        Tags: {article.tags ? article.tags.join(", ") : "N/A"}
+                      </p>
+                    </li>
+                    <li className="article-detail-item">
+                      <p>
+                        Reactions:{" "}
+                        {article.reactions
+                          ? article.reactions.join(", ")
+                          : "N/A"}
+                      </p>
+                    </li>
+                    <li className="article-detail-item">
+                      <p>
+                        Created: {new Date(article.created_at).toLocaleString()}
+                      </p>
+                    </li>
+                  </ul>
+                </div>
+                <div className="has-text-centered">
+                  <button
+                    className="button is-primary"
+                    onClick={() => handleReadMore(article.id)}
+                  >
+                    Read More
+                  </button>
+                </div>
               </div>
             </div>
-            <div className="card-footer">
-              <p className="card-footer-item">Author: {article.author}</p>
-              <p className="card-footer-item">Views: {article.view_count}</p>
-              <time className="card-footer-item" dateTime={article.created_at}>
-                <p>Creado: {new Date(article.created_at).toLocaleString()}</p>
-              </time>
-            </div>
-            <footer className="card-footer">
-              <p className="card-footer-item">
-                Categories:{" "}
-                {article.categories
-                  ? getCategoryNames(article.categories)
-                  : "N/A"}
-              </p>
-              <p className="card-footer-item">
-                Tags: {article.tags ? article.tags.join(", ") : "N/A"}
-              </p>
-              <p className="card-footer-item">
-                Reactions:{" "}
-                {article.reactions ? article.reactions.join(", ") : "N/A"}
-              </p>
-
-              <button
-                className="button is-primary mt-1 ml-1"
-                onClick={() => handleReadMore(article.id)}
-              >
-                Read More
-              </button>
-            </footer>
-          </div>
-        ))
-      ) : (
-        <div>Loading...</div>
-      )}
+          ))
+        ) : (
+          <div>No articles found.</div>
+        )}
+      </div>
+      <div className="pagination">
+        <button
+          className="button is-info mt-3"
+          onClick={() => onPageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+        >
+          <span className="icon">
+            <i className="fas fa-arrow-left"></i>
+          </span>
+          <span className="page-info">Previous</span>
+        </button>
+        <span className="page-info">
+          Page {currentPage} of {Math.ceil(totalCount / 10)}
+        </span>
+        <button
+          className="button is-info mt-3"
+          onClick={() => onPageChange(currentPage + 1)}
+          disabled={currentPage === Math.ceil(totalCount / 10)}
+        >
+          <span className="page-info">Next</span>
+          <span className="icon">
+            <i className="fas fa-arrow-right"></i>
+          </span>
+        </button>
+      </div>
     </div>
   );
 };

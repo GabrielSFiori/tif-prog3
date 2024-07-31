@@ -1,8 +1,7 @@
-export const fetchArticles = async () => {
+export const fetchArticles = async (page = 1) => {
   const token = localStorage.getItem("authToken");
-
   const response = await fetch(
-    "https://sandbox.academiadevelopers.com/infosphere/articles/",
+    `https://sandbox.academiadevelopers.com/infosphere/articles/?page=${page}`,
     {
       method: "GET",
       headers: {
@@ -17,7 +16,15 @@ export const fetchArticles = async () => {
   }
 
   const data = await response.json();
-  return data;
+
+  return {
+    articles: data.results,
+    totalCount: data.count,
+    nextPage: data.next ? new URL(data.next).searchParams.get("page") : null,
+    prevPage: data.previous
+      ? new URL(data.previous).searchParams.get("page")
+      : null,
+  };
 };
 
 export async function fetchArticleById(id) {
@@ -51,8 +58,7 @@ export const fetchCreateArticle = async (articleData) => {
     throw new Error("Error al crear el artículo");
   }
 
-  const data = await response.json();
-  return data;
+  return await response.json();
 };
 
 export const fetchUpdateArticle = async (id, formData) => {
@@ -110,7 +116,9 @@ export async function fetchCategories() {
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
-    return await response.json();
+
+    const data = await response.json();
+    return data.results;
   } catch (error) {
     throw new Error(error.message);
   }

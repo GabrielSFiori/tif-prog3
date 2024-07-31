@@ -7,6 +7,7 @@ import {
 } from "../../hooks/ConnApi";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
+import "./styles/ArticleDetail.css";
 
 export const ArticleDetail = () => {
   const { id } = useParams();
@@ -14,7 +15,7 @@ export const ArticleDetail = () => {
   const [categories, setCategories] = useState([]);
   const [categoriesMap, setCategoriesMap] = useState({});
   const [error, setError] = useState(null);
-  const { auth } = useContext(AuthContext); // Obtener el token desde el contexto
+  const { auth } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleEdit = () => {
@@ -73,56 +74,70 @@ export const ArticleDetail = () => {
   };
 
   return (
-    <div className="container" style={{ marginTop: "3rem" }}>
-      <h1 className="title is-4 has-text-centered">{article.title}</h1>
+    <div className="container">
+      <h1 className="title is-4">{article.title}</h1>
       <div className="content">
-        {article.image && (
-          <figure className="image">
-            <img
-              src={article.image}
-              alt={article.caption || "Placeholder image"}
-              style={{ width: "100%" }}
-            />
-          </figure>
-        )}
-        <p>{article.abstract}</p>
-        <p>{article.content}</p>
-        <div className="card-footer">
-          <p className="card-footer-item">Author: {article.author}</p>
-          <p className="card-footer-item">Views: {article.view_count}</p>
-          <time className="card-footer-item" dateTime={article.created_at}>
-            <p>Creado: {new Date(article.created_at).toLocaleString()}</p>
-          </time>
-        </div>
-        <footer className="card-footer">
-          <p className="card-footer-item">
-            Categories:{" "}
-            {article.categories ? getCategoryNames(article.categories) : "N/A"}
-          </p>
-          <p className="card-footer-item">
-            Tags: {article.tags ? article.tags.join(", ") : "N/A"}
-          </p>
-          <p className="card-footer-item">
-            Reactions:{" "}
-            {article.reactions ? article.reactions.join(", ") : "N/A"}
-          </p>
-
-          {auth.isAuthenticated && (
-            <>
-              <a className="card-footer-item" onClick={handleEdit}>
-                Edit
-              </a>
-              <a className="card-footer-item" onClick={handleDelete}>
-                Delete
-              </a>
-            </>
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          {article.image ? (
+            <figure className="image-container">
+              <img
+                src={article.image}
+                alt={article.caption || "Placeholder image"}
+              />
+            </figure>
+          ) : (
+            <div className="no-image">No Image</div>
           )}
-        </footer>
-        <div className="has-text-centered">
-          <button className="button is-info is-dark" onClick={handleBack}>
-            Go Back
-          </button>
         </div>
+
+        <p>{article.abstract}</p>
+        <div
+          className="container"
+          style={{
+            display: "-webkit-box",
+            WebkitBoxOrient: "vertical",
+
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+          }}
+        >
+          <p>{article.content}</p>
+        </div>
+      </div>
+      <footer className="card-footer">
+        <p className="card-footer-item">Author: {article.author}</p>
+        <p className="card-footer-item">Views: {article.view_count}</p>
+        <time className="card-footer-item" dateTime={article.created_at}>
+          <p>Created: {new Date(article.created_at).toLocaleString()}</p>
+        </time>
+      </footer>
+      <footer className="card-footer">
+        <p className="card-footer-item">
+          Categories:{" "}
+          {article.categories ? getCategoryNames(article.categories) : "N/A"}
+        </p>
+        <p className="card-footer-item">
+          Tags: {article.tags ? article.tags.join(", ") : "N/A"}
+        </p>
+        <p className="card-footer-item">
+          Reactions: {article.reactions ? article.reactions.join(", ") : "N/A"}
+        </p>
+      </footer>
+
+      <div className="has-text-centered">
+        <button className="button is-info is-dark " onClick={handleBack}>
+          Go Back
+        </button>
+        {auth.isAuthenticated && (
+          <>
+            <a className="button is-info ml-4" onClick={handleEdit}>
+              Edit
+            </a>
+            <a className="button is-danger ml-4" onClick={handleDelete}>
+              Delete
+            </a>
+          </>
+        )}
       </div>
     </div>
   );
