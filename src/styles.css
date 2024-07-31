@@ -84,6 +84,7 @@ body.dark-mode .title {
 .title {
   display: -webkit-box;
   -webkit-box-orient: vertical;
+  line-clamp: 2;
   -webkit-line-clamp: 2;
   overflow: hidden;
   height: 4.3rem;

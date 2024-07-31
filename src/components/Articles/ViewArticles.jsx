@@ -108,26 +108,26 @@ export const ViewArticles = ({
           <div>No articles found.</div>
         )}
       </div>
-      <div className="pagination">
+      <div className="pagination mb-1">
         <button
-          className="button is-info mt-3"
+          className="button is-info mt-3 mb-3"
           onClick={() => onPageChange(currentPage - 1)}
           disabled={currentPage === 1}
         >
           <span className="icon">
             <i className="fas fa-arrow-left"></i>
           </span>
-          <span className="page-info">Previous</span>
+          <span className="page-info"></span>
         </button>
-        <span className="page-info">
+        <span className="page-info mt-3 mb-3" style={{ color: "white" }}>
           Page {currentPage} of {Math.ceil(totalCount / 10)}
         </span>
         <button
-          className="button is-info mt-3"
+          className="button is-info mt-3 mb-3"
           onClick={() => onPageChange(currentPage + 1)}
           disabled={currentPage === Math.ceil(totalCount / 10)}
         >
-          <span className="page-info">Next</span>
+          <span className="page-info"></span>
           <span className="icon">
             <i className="fas fa-arrow-right"></i>
           </span>
