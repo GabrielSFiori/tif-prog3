@@ -86,11 +86,13 @@ export const ArticleDetail = () => {
               />
             </figure>
           ) : (
-            <div className="no-image">No Image</div>
+            <div className="no-image-detail">No Image</div>
           )}
         </div>
+        <div className="mt-4">
+          <p>{article.abstract}</p>
+        </div>
 
-        <p>{article.abstract}</p>
         <div
           className="container"
           style={{
@@ -103,41 +105,43 @@ export const ArticleDetail = () => {
         >
           <p>{article.content}</p>
         </div>
-      </div>
-      <footer className="card-footer">
-        <p className="card-footer-item">Author: {article.author}</p>
-        <p className="card-footer-item">Views: {article.view_count}</p>
-        <time className="card-footer-item" dateTime={article.created_at}>
-          <p>Created: {new Date(article.created_at).toLocaleString()}</p>
-        </time>
-      </footer>
-      <footer className="card-footer">
-        <p className="card-footer-item">
-          Categories:{" "}
-          {article.categories ? getCategoryNames(article.categories) : "N/A"}
-        </p>
-        <p className="card-footer-item">
-          Tags: {article.tags ? article.tags.join(", ") : "N/A"}
-        </p>
-        <p className="card-footer-item">
-          Reactions: {article.reactions ? article.reactions.join(", ") : "N/A"}
-        </p>
-      </footer>
 
-      <div className="has-text-centered">
-        <button className="button is-info is-dark " onClick={handleBack}>
-          Go Back
-        </button>
-        {auth.isAuthenticated && (
-          <>
-            <a className="button is-info ml-4" onClick={handleEdit}>
-              Edit
-            </a>
-            <a className="button is-danger ml-4" onClick={handleDelete}>
-              Delete
-            </a>
-          </>
-        )}
+        <footer className="card-footer">
+          <p className="card-footer-item">Author: {article.author}</p>
+          <p className="card-footer-item">Views: {article.view_count}</p>
+          <time className="card-footer-item" dateTime={article.created_at}>
+            <p>Created: {new Date(article.created_at).toLocaleString()}</p>
+          </time>
+        </footer>
+        <footer className="card-footer">
+          <p className="card-footer-item">
+            Categories:{" "}
+            {article.categories ? getCategoryNames(article.categories) : "N/A"}
+          </p>
+          <p className="card-footer-item">
+            Tags: {article.tags ? article.tags.join(", ") : "N/A"}
+          </p>
+          <p className="card-footer-item">
+            Reactions:{" "}
+            {article.reactions ? article.reactions.join(", ") : "N/A"}
+          </p>
+        </footer>
+
+        <div className="has-text-centered">
+          <button className="button is-info is-dark " onClick={handleBack}>
+            Go Back
+          </button>
+          {auth.isAuthenticated && (
+            <>
+              <a className="button is-info ml-4" onClick={handleEdit}>
+                Edit
+              </a>
+              <a className="button is-danger ml-4" onClick={handleDelete}>
+                Delete
+              </a>
+            </>
+          )}
+        </div>
       </div>
     </div>
   );
