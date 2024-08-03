@@ -23,8 +23,8 @@
   margin: 0 auto;
 }
 
-.image {
-  max-height: 300px;
+.img {
+  max-height: 100%;
   object-fit: cover;
   border-radius: 8px;
 }

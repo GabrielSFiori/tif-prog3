@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { DarkModeContext } from "../contexts/DarkModeProvider";
+import { DarkModeContext } from "./DarkModeProvider";
 
 export const DarkMode = () => {
   const { theme, toggleTheme } = useContext(DarkModeContext);

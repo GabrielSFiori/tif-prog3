@@ -79,7 +79,8 @@ export const fetchUpdateArticle = async (id, formData) => {
     throw new Error(JSON.stringify(errorData));
   }
 
-  return response.json();
+  const data = await response.json();
+  return data;
 };
 
 export const fetchDeleteArticle = async (id) => {
