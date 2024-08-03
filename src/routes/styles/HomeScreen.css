@@ -5,9 +5,32 @@
 }
 
 .carousel-item {
+  position: relative;
   text-align: center;
-  border-radius: 8px;
+  border-radius: 20px;
   overflow: hidden;
+}
+.carousel-item::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 80px;
+  border: 4px solid rgba(80, 79, 79, 0.5);
+  box-sizing: border-box;
+  animation: rotate-border 3s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes rotate-border {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .weather-container {
@@ -67,15 +90,31 @@
 
 .is-light .weather-section {
   border: 1px solid #ddd;
-  background-color: #ffffff;
+  background-color: #586db1;
+  border-radius: 30px;
+}
+.is-light .weather-container {
+  color: #000000;
 }
 
 .is-light .title.is-4 {
-  background-color: #b6b1b1;
+  background-color: #dde7b9;
+  border-radius: 30px;
 }
 
+.is-light .carousel-item {
+  background-color: #b6b1b1;
+}
 .is-light .carousel-container {
-  background-color: #ffffff;
+  background-color: #b6b1b1;
+  border-radius: 30px;
+}
+
+.is-light .button {
+  background-color: #5aa76a;
+}
+.is-light .button:hover {
+  background-color: #44b8c0;
 }
 
 .is-dark .home-container {
@@ -94,7 +133,7 @@
 
 .is-dark .carousel-item {
   background-color: #333333;
-  border: 1px solid #555555;
+  border: 3px solid #555555;
 }
 .is-dark .carousel-caption {
   color: #ffffff;
