@@ -25,6 +25,11 @@ export const NavBar = () => {
           role="navigation"
           aria-label="main navigation"
         >
+          <figure>
+            <Link to="/">
+              <img className="logo" src={"/logo.png"} alt="logo" />
+            </Link>
+          </figure>
           <div className="navbar-brand">
             <button
               className="navbar-burger"

@@ -113,7 +113,12 @@ export async function fetchCategories() {
   const urlBase =
     "https://sandbox.academiadevelopers.com/infosphere/categories/";
   try {
-    const response = await fetch(urlBase);
+    const response = await fetch(urlBase, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }

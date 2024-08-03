@@ -31,6 +31,7 @@ export const ArticleEdit = () => {
       try {
         const categoriesData = await fetchCategories();
         setCategories(categoriesData);
+
         const articleData = await fetchArticleById(id);
         setArticle(articleData);
 
@@ -40,7 +41,7 @@ export const ArticleEdit = () => {
           content: articleData.content || "",
           image: null,
           caption: articleData.caption || "",
-          categories: categoriesData.categories || [],
+          categories: articleData.categories || [],
         });
       } catch (error) {
         setError(error.message);
@@ -103,7 +104,7 @@ export const ArticleEdit = () => {
     formDataToSend.append("caption", formData.caption);
     formDataToSend.append(
       "categories",
-      JSON.stringify(formData.categories.map((cat) => cat.id)) // Sending only IDs of categories
+      JSON.stringify(formData.categories.map((cat) => cat.id))
     );
 
     if (formData.image) {
