@@ -18,8 +18,9 @@
   width: 50%;
   height: 300px;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  margin: 0 auto;
 }
 
 .image {
