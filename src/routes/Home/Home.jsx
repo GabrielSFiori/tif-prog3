@@ -36,7 +36,7 @@ export const Home = ({ articles = [] }) => {
   }, []);
 
   const fetchWeather = async (latitude, longitude) => {
-    const apiKey = "129a18f43283a06b3f4ea6094a8f9d6c";
+    const apiKey = "";
     const url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=metric&appid=${apiKey}`;
     try {
       const response = await axios.get(url);

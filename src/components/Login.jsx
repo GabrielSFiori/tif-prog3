@@ -35,7 +35,7 @@ export const Login = () => {
   useEffect(() => {
     if (data && data.token) {
       login(username, data.token);
-      navigate("/articles");
+      navigate("/");
     }
   }, [data, navigate, login, username]);
 
