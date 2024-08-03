@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
-import { DarkMode } from "./DarkMode";
+import { DarkMode } from "../contexts/DarkMode";
 
 export const NavBar = () => {
   const { auth, logout } = useContext(AuthContext);

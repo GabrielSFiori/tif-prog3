@@ -29,6 +29,8 @@ export const ArticleEdit = () => {
   useEffect(() => {
     async function fetchData() {
       try {
+        const categoriesData = await fetchCategories();
+        setCategories(categoriesData);
         const articleData = await fetchArticleById(id);
         setArticle(articleData);
 
@@ -38,11 +40,8 @@ export const ArticleEdit = () => {
           content: articleData.content || "",
           image: null,
           caption: articleData.caption || "",
-          categories: articleData.categories || [],
+          categories: categoriesData.categories || [],
         });
-
-        const categoriesData = await fetchCategories();
-        setCategories(categoriesData);
       } catch (error) {
         setError(error.message);
       }
