@@ -9,6 +9,12 @@
   flex-direction: column;
 }
 
+.logo {
+  width: 100px;
+  height: 100px;
+  padding: 1rem;
+}
+
 .light-mode .navbar {
   background-color: #44b8c0;
   transition: background-color 0.3s ease, color 0.3s ease;
