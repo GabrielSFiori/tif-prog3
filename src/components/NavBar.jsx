@@ -25,11 +25,6 @@ export const NavBar = () => {
           role="navigation"
           aria-label="main navigation"
         >
-          <figure>
-            <Link to="/">
-              <img className="logo" src={"/logo.png"} alt="logo" />
-            </Link>
-          </figure>
           <div className="navbar-brand">
             <button
               className="navbar-burger"
@@ -44,6 +39,11 @@ export const NavBar = () => {
           </div>
 
           <div className={`navbar-menu ${isActive ? "is-active" : ""}`}>
+            <figure>
+              <Link to="/">
+                <img className="logo" src={"/logo.png"} alt="logo" />
+              </Link>
+            </figure>
             <div className="navbar-start">
               <Link className="navbar-item ml-3" to="/">
                 Home
