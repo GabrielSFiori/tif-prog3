@@ -10,14 +10,37 @@
 }
 
 .light-mode .navbar {
-  background-color: #b6b1b1;
+  background-color: #44b8c0;
   transition: background-color 0.3s ease, color 0.3s ease;
+  border-radius: 30px;
+}
+
+.light-mode .textarea {
+  background-color: #b6b1b1;
+  color: #000000;
+}
+.light-mode .input {
+  background-color: #b6b1b1;
+  color: #000000;
+}
+.light-mode .button {
+  background-color: #49ac72;
+  color: #000000;
+}
+.light-mode .button:hover {
+  background-color: #579bb6;
 }
 
 .light-mode .navbar-item {
-  color: #201f1f;
+  color: #181717;
   transition: background-color 0.3s ease, color 0.3s ease;
+  border-radius: 30px;
 }
+
+.light-mode .navbar-menu {
+  text-align: center;
+}
+
 body.light-mode {
   background-color: #ffffff;
   color: #363636;
@@ -33,17 +56,26 @@ body.light-mode .card {
   border: 1px solid #ddd;
 }
 
-.input .textarea {
-  background-color: #ffffff;
-  color: #363636;
-  border: 1px solid #ddd;
-}
-
 .dark-mode .navbar {
   background-color: #494646;
 }
 .dark-mode .navbar-item {
   color: #ffffff;
+}
+.dark-mode .navbar-burger span {
+  background-color: #ffffff;
+}
+.dark-mode .navbar-menu {
+  background-color: #494646;
+  text-align: center;
+}
+
+.dark-mode .button {
+  background-color: #363636;
+  color: #ffffff;
+}
+.dark-mode .button:hover {
+  background-color: #807a7a;
 }
 
 body.dark-mode {
