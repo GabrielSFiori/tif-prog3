@@ -9,7 +9,10 @@ import { Login } from "./components/Login";
 import { AuthProvider } from "./contexts/AuthContext";
 import { ArticleDetail } from "./components/Articles/ArticleDetail";
 import { ArticleEdit } from "./components/Articles/ArticleEdit";
+import { Profile } from "./components/Profile/Profiles";
+import { ProfileDetail } from "./components/Profile/ProfileDetail";
 import "./styles.css";
+import { EditProfile } from "./components/Profile/ProfilesEdit";
 
 const ProtectedRoute = ({ children }) => {
   const token = localStorage.getItem("authToken");
@@ -38,7 +41,13 @@ export const App = () => {
           }
         />
         <Route path="/contact" element={<ContactScreen />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/users/profiles" element={<Profile />} />
+        <Route
+          path="/users/profiles/profile_data"
+          element={<ProfileDetail />}
+        />
+        <Route path="/users/profiles/:userId" element={<EditProfile />} />{" "}
+        <Route path="/users/profiles/login" element={<Login />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </AuthProvider>

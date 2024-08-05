@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 
 const CategoryDropdown = ({
-  categories,
-  selectedCategories,
+  categories = [],
+  selectedCategories = [],
   onSelectCategory,
 }) => {
   const [isActive, setIsActive] = useState(false);
@@ -19,7 +19,7 @@ const CategoryDropdown = ({
 
   return (
     <div className={`dropdown ${isActive ? "is-active" : ""}`}>
-      <div className="dropdown-trigger ml-2">
+      <div className="dropdown-trigger">
         <button
           className="button"
           aria-haspopup="true"

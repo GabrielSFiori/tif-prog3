@@ -15,62 +15,85 @@
   padding: 1rem;
 }
 
-.light-mode .navbar {
-  background-color: #44b8c0;
-  transition: background-color 0.3s ease, color 0.3s ease;
+.button-prueba {
+  font-size: 20px;
+}
+
+.navbar-item:focus,
+.navbar-item:active,
+.navbar-item.is-active {
+  outline: 2px solid #4c7070;
+  background-color: rgba(34, 193, 195, 0.1);
+  box-shadow: none;
   border-radius: 30px;
 }
 
-.light-mode .textarea {
-  background-color: #b6b1b1;
-  color: #000000;
+.light-mode .navbar {
+  background: #93c764;
+  background: linear-gradient(270deg, #93c764, #4eb6e6);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
+
+.light-mode .textarea,
 .light-mode .input {
   background-color: #b6b1b1;
   color: #000000;
 }
+
 .light-mode .button {
-  background-color: #49ac72;
+  background-color: #b6b1b1;
   color: #000000;
+  font-size: 18px;
 }
+
 .light-mode .button:hover {
-  background-color: #579bb6;
+  background-color: #22c1c3;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  border-radius: 20px;
 }
 
 .light-mode .navbar-item {
-  color: #181717;
+  color: #000000;
+  font-size: 18px;
+}
+
+.light-mode .navbar-item:hover {
+  background-color: #22c1c3;
   transition: background-color 0.3s ease, color 0.3s ease;
-  border-radius: 30px;
+  border-radius: 20px;
+}
+
+.light-mode .navbar-burger span {
+  background-color: #181717;
 }
 
 .light-mode .navbar-menu {
+  background: #93c764;
+  background: linear-gradient(270deg, #93c764, #4eb6e6);
   text-align: center;
 }
 
-body.light-mode {
-  background-color: #ffffff;
-  color: #363636;
-}
-
-body.light-mode .title {
-  color: #363636;
-}
-
-body.light-mode .card {
-  background-color: #ffffff;
-  color: #363636;
-  border: 1px solid #ddd;
+.dark-mode .navbar-item:focus,
+.dark-mode .navbar-item:active,
+.dark-mode .navbar-item.is-active {
+  outline: 2px solid #cddedf;
+  background-color: rgba(34, 193, 195, 0.1);
+  font-size: 22px;
 }
 
 .dark-mode .navbar {
   background-color: #494646;
 }
+
 .dark-mode .navbar-item {
   color: #ffffff;
+  font-size: 18px;
 }
+
 .dark-mode .navbar-burger span {
   background-color: #ffffff;
 }
+
 .dark-mode .navbar-menu {
   background-color: #494646;
   text-align: center;
@@ -80,13 +103,38 @@ body.light-mode .card {
   background-color: #363636;
   color: #ffffff;
 }
+
 .dark-mode .button:hover {
   background-color: #807a7a;
+}
+
+body.light-mode {
+  /*
+* Created with https://www.css-gradient.com
+* Gradient link: https://www.css-gradient.com/?c1=428fce&c2=045c13&gt=l&gd=dtl
+  background: #93c764;
+  background: linear-gradient(270deg, #93c764, #4eb6e6);
+  background: #428fce;
+  background: linear-gradient(135deg, #428fce, #045c13);
+* Created with https://www.css-gradient.com
+* Gradient link: https://www.css-gradient.com/?c1=69e074&c2=ec68ad&gt=l&gd=dtl
+*/
+
+  background: #4fb2d5;
+  background: radial-gradient(at center, #4fb2d5, #db5a57);
+  color: #363636;
 }
 
 body.dark-mode {
   background-color: #000000;
   color: #ffffff;
+}
+
+body.light-mode .card {
+  background: #96c5ac;
+  background: radial-gradient(at center, #96c5ac, #777dce);
+  color: #363636;
+  border: 1px solid #ddd;
 }
 
 body.dark-mode .card {
@@ -99,6 +147,16 @@ body.dark-mode .card-header {
   background-color: #333333;
   border-bottom: 1px solid #444;
 }
+body.light-mode .card-header {
+  background: #96c5ac;
+  background: radial-gradient(at center, #96c5ac, #777dce);
+  border-bottom: 1px solid #444;
+}
+
+body.light-mode .title {
+  color: #363636;
+}
+
 body.dark-mode .title {
   color: #ffffff;
   margin-top: 10px;

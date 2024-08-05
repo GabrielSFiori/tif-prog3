@@ -4,7 +4,6 @@ import "./styles/ArticleDetail.css";
 
 export const ViewArticles = ({
   articles,
-  categories,
   categoriesMap,
   getCategoryNames,
   onPageChange,
@@ -68,7 +67,7 @@ export const ViewArticles = ({
                     <li className="article-detail-item">
                       <p>
                         Categories:{" "}
-                        {article.categories
+                        {article.categories.length > 0
                           ? getCategoryNames(article.categories)
                           : "N/A"}
                       </p>

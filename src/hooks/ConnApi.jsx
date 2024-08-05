@@ -61,26 +61,29 @@ export const fetchCreateArticle = async (articleData) => {
   return await response.json();
 };
 
-export const fetchUpdateArticle = async (id, formData) => {
+export const fetchUpdateArticle = async (id, articleData) => {
   const token = localStorage.getItem("authToken");
+
   const response = await fetch(
     `https://sandbox.academiadevelopers.com/infosphere/articles/${id}/`,
     {
       method: "PUT",
-      body: formData,
       headers: {
-        Authorization: token ? `Token ${token}` : "",
+        "Content-Type": "application/json",
+        Authorization: `Token ${token}`,
       },
+      body: JSON.stringify(articleData),
     }
   );
 
   if (!response.ok) {
     const errorData = await response.json();
-    throw new Error(JSON.stringify(errorData));
+    throw new Error(
+      errorData.detail || "An error occurred while updating the article."
+    );
   }
 
-  const data = await response.json();
-  return data;
+  return await response.json();
 };
 
 export const fetchDeleteArticle = async (id) => {
@@ -129,3 +132,53 @@ export async function fetchCategories() {
     throw new Error(error.message);
   }
 }
+
+export const fetchCreateArticleCategory = async (data) => {
+  const token = localStorage.getItem("authToken");
+  const response = await fetch(
+    "https://sandbox.academiadevelopers.com/infosphere/article-categories/",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token ? `Token ${token}` : "",
+      },
+      body: JSON.stringify(data),
+    }
+  );
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(
+      errorData.detail || "Error al crear la categoría del artículo"
+    );
+  }
+
+  return await response.json();
+};
+
+export const fetchUpdateArticleCategory = async (id, categoryData) => {
+  const token = localStorage.getItem("authToken");
+
+  const response = await fetch(
+    `https://sandbox.academiadevelopers.com/infosphere/article-categories/${id}/`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Token ${token}`,
+      },
+      body: JSON.stringify(categoryData),
+    }
+  );
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(
+      errorData.detail ||
+        "An error occurred while updating the article category."
+    );
+  }
+
+  return await response.json();
+};

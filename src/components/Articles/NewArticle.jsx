@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { fetchCreateArticle, fetchCategories } from "../../hooks/ConnApi";
+import {
+  fetchCreateArticle,
+  fetchCategories,
+  fetchCreateArticleCategory,
+} from "../../hooks/ConnApi";
 import CategoryDropdown from "../Category/CategoryDropdown";
 
 export const NewArticle = () => {
@@ -17,6 +21,7 @@ export const NewArticle = () => {
     async function getCategories() {
       try {
         const data = await fetchCategories();
+
         setCategories(data);
       } catch (error) {
         setError("Failed to load categories: " + error.message);
@@ -34,16 +39,20 @@ export const NewArticle = () => {
     formData.append("abstract", abstract);
     formData.append("content", content);
     formData.append("caption", caption);
-    formData.append(
-      "categories",
-      JSON.stringify(selectedCategories.map((category) => category.id))
-    );
     if (image) {
       formData.append("image", image);
     }
 
     try {
-      const data = await fetchCreateArticle(formData);
+      const articleData = await fetchCreateArticle(formData);
+
+      for (const category of selectedCategories) {
+        await fetchCreateArticleCategory({
+          article: articleData.id,
+          category: category.id,
+        });
+      }
+
       setSuccess("Article created successfully!");
       setTitle("");
       setAbstract("");

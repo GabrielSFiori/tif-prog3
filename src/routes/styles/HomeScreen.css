@@ -83,6 +83,10 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+.is-light .carousel-caption {
+  color: #000000;
+}
+
 .is-light .home-container {
   background-color: #f5f5f5;
   color: #000000;
@@ -90,7 +94,12 @@
 
 .is-light .weather-section {
   border: 1px solid #ddd;
-  background-color: #586db1;
+  background: rgb(238, 174, 202);
+  background: radial-gradient(
+    circle,
+    rgba(238, 174, 202, 1) 0%,
+    rgba(148, 187, 233, 1) 100%
+  );
   border-radius: 30px;
 }
 .is-light .weather-container {
@@ -98,23 +107,20 @@
 }
 
 .is-light .title.is-4 {
-  background-color: #dde7b9;
   border-radius: 30px;
+}
+.is-light .subtitle.is-6 {
+  color: #000;
 }
 
 .is-light .carousel-item {
-  background-color: #b6b1b1;
+  background: #96c5ac;
+  background: radial-gradient(at center, #96c5ac, #777dce);
 }
 .is-light .carousel-container {
-  background-color: #b6b1b1;
+  background: #96c5ac;
+  background: radial-gradient(at center, #96c5ac, #777dce);
   border-radius: 30px;
-}
-
-.is-light .button {
-  background-color: #5aa76a;
-}
-.is-light .button:hover {
-  background-color: #44b8c0;
 }
 
 .is-dark .home-container {

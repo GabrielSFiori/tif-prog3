@@ -4,6 +4,7 @@ import {
   fetchArticleById,
   fetchCategories,
   fetchUpdateArticle,
+  fetchUpdateArticleCategory,
 } from "../../hooks/ConnApi";
 import { AuthContext } from "../../contexts/AuthContext";
 import CategoryDropdown from "../Category/CategoryDropdown";
@@ -61,22 +62,15 @@ export const ArticleEdit = () => {
   const handleCategorySelect = (category) => {
     setFormData((prevFormData) => {
       const isAlreadySelected = prevFormData.categories.some(
-        (selected) => selected.id === category.id
+        (selected) => selected === category.id
       );
 
-      if (isAlreadySelected) {
-        return {
-          ...prevFormData,
-          categories: prevFormData.categories.filter(
-            (selected) => selected.id !== category.id
-          ),
-        };
-      } else {
-        return {
-          ...prevFormData,
-          categories: [...prevFormData.categories, category],
-        };
-      }
+      return {
+        ...prevFormData,
+        categories: isAlreadySelected
+          ? prevFormData.categories.filter((catId) => catId !== category.id)
+          : [...prevFormData.categories, category.id],
+      };
     });
   };
 
@@ -97,23 +91,46 @@ export const ArticleEdit = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const formDataToSend = new FormData();
-    formDataToSend.append("title", formData.title);
-    formDataToSend.append("abstract", formData.abstract);
-    formDataToSend.append("content", formData.content);
-    formDataToSend.append("caption", formData.caption);
-    formDataToSend.append(
-      "categories",
-      JSON.stringify(formData.categories.map((cat) => cat.id))
-    );
+    const updatedFormData = new FormData();
+    updatedFormData.append("title", formData.title);
+    updatedFormData.append("abstract", formData.abstract || "");
+    updatedFormData.append("content", formData.content);
+    updatedFormData.append("caption", formData.caption || "");
 
     if (formData.image) {
-      formDataToSend.append("image", formData.image);
+      updatedFormData.append("image", formData.image);
     }
 
     try {
-      await fetchUpdateArticle(id, formDataToSend);
-      setSuccess("Article updated successfully!");
+      const updatedArticle = await fetchUpdateArticle(id, updatedFormData);
+
+      const existingCategories = article.categories || [];
+      const newCategories = formData.categories || [];
+
+      const categoriesToRemove = existingCategories.filter(
+        (catId) => !newCategories.includes(catId)
+      );
+      const categoriesToAdd = newCategories.filter(
+        (catId) => !existingCategories.includes(catId)
+      );
+
+      for (const catId of categoriesToRemove) {
+        await fetchUpdateArticleCategory(id, {
+          article: updatedArticle.id,
+          category: catId,
+          action: "remove",
+        });
+      }
+
+      for (const catId of categoriesToAdd) {
+        await fetchUpdateArticleCategory(id, {
+          article: updatedArticle.id,
+          category: catId,
+          action: "add",
+        });
+      }
+
+      setSuccess("Article and categories updated successfully!");
       navigate(`/article/${id}`);
     } catch (error) {
       setError(error.message);
@@ -173,7 +190,9 @@ export const ArticleEdit = () => {
           <label htmlFor="categories">Categories</label>
           <CategoryDropdown
             categories={categories}
-            selectedCategories={formData.categories}
+            selectedCategories={categories.filter((category) =>
+              formData.categories.includes(category.id)
+            )}
             onSelectCategory={handleCategorySelect}
           />
         </div>
