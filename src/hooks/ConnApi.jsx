@@ -61,29 +61,33 @@ export const fetchCreateArticle = async (articleData) => {
   return await response.json();
 };
 
-export const fetchUpdateArticle = async (id, articleData) => {
+export const fetchUpdateArticle = async (id, formData) => {
   const token = localStorage.getItem("authToken");
-
-  const response = await fetch(
-    `https://sandbox.academiadevelopers.com/infosphere/articles/${id}/`,
-    {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Token ${token}`,
-      },
-      body: JSON.stringify(articleData),
-    }
-  );
-
-  if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(
-      errorData.detail || "An error occurred while updating the article."
+  try {
+    const response = await fetch(
+      `https://sandbox.academiadevelopers.com/infosphere/articles/${id}/`,
+      {
+        method: "PUT",
+        body: formData,
+        headers: {
+          Authorization: token ? `Token ${token}` : "",
+          // 'Content-Type': 'multipart/form-data', // Normalmente no se establece el Content-Type en la solicitud cuando se usa FormData
+        },
+      }
     );
-  }
 
-  return await response.json();
+    if (!response.ok) {
+      const errorDetails = await response.text();
+      throw new Error(
+        `An error occurred while updating the article: ${errorDetails}`
+      );
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Error updating article:", error);
+    throw error;
+  }
 };
 
 export const fetchDeleteArticle = async (id) => {
@@ -157,28 +161,34 @@ export const fetchCreateArticleCategory = async (data) => {
   return await response.json();
 };
 
-export const fetchUpdateArticleCategory = async (id, categoryData) => {
-  const token = localStorage.getItem("authToken");
-
-  const response = await fetch(
-    `https://sandbox.academiadevelopers.com/infosphere/article-categories/${id}/`,
-    {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Token ${token}`,
-      },
-      body: JSON.stringify(categoryData),
-    }
-  );
-
-  if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(
-      errorData.detail ||
-        "An error occurred while updating the article category."
+export const fetchUpdateArticleCategory = async (articleId, categoryId) => {
+  try {
+    const token = localStorage.getItem("authToken");
+    const response = await fetch(
+      `https://sandbox.academiadevelopers.com/infosphere/article-categories/${articleId}/`,
+      {
+        method: "PUT",
+        headers: {
+          Authorization: token ? `Token ${token}` : "",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          article: articleId,
+          category: categoryId,
+        }),
+      }
     );
-  }
 
-  return await response.json();
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error(`Response status: ${response.status}`);
+      console.error(`Response body: ${errorText}`);
+      throw new Error(`Error updating article categories: ${errorText}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Error updating article categories:", error);
+    throw error;
+  }
 };

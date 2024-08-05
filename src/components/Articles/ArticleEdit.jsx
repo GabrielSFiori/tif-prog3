@@ -1,21 +1,18 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import {
-  fetchArticleById,
-  fetchCategories,
-  fetchUpdateArticle,
-  fetchUpdateArticleCategory,
-} from "../../hooks/ConnApi";
-import { AuthContext } from "../../contexts/AuthContext";
 import CategoryDropdown from "../Category/CategoryDropdown";
-import "./styles/ArticleEdit.css";
+import useArticleCategory from "../../hooks/useArticleCategory";
 
 export const ArticleEdit = () => {
   const { id } = useParams();
-  const [article, setArticle] = useState(null);
-  const [categories, setCategories] = useState([]);
-  const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(null);
+  const {
+    article,
+    categories,
+    error,
+    success,
+    updateArticle,
+    updateArticleCategories,
+  } = useArticleCategory(id);
   const [formData, setFormData] = useState({
     title: "",
     abstract: "",
@@ -24,32 +21,20 @@ export const ArticleEdit = () => {
     caption: "",
     categories: [],
   });
-  const { auth } = useContext(AuthContext);
   const navigate = useNavigate();
 
   useEffect(() => {
-    async function fetchData() {
-      try {
-        const categoriesData = await fetchCategories();
-        setCategories(categoriesData);
-
-        const articleData = await fetchArticleById(id);
-        setArticle(articleData);
-
-        setFormData({
-          title: articleData.title || "",
-          abstract: articleData.abstract || "",
-          content: articleData.content || "",
-          image: null,
-          caption: articleData.caption || "",
-          categories: articleData.categories || [],
-        });
-      } catch (error) {
-        setError(error.message);
-      }
+    if (article) {
+      setFormData({
+        title: article.title || "",
+        abstract: article.abstract || "",
+        content: article.content || "",
+        image: null,
+        caption: article.caption || "",
+        categories: article.categories || [],
+      });
     }
-    fetchData();
-  }, [id]);
+  }, [article]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -61,9 +46,7 @@ export const ArticleEdit = () => {
 
   const handleCategorySelect = (category) => {
     setFormData((prevFormData) => {
-      const isAlreadySelected = prevFormData.categories.some(
-        (selected) => selected === category.id
-      );
+      const isAlreadySelected = prevFormData.categories.includes(category.id);
 
       return {
         ...prevFormData,
@@ -102,8 +85,9 @@ export const ArticleEdit = () => {
     }
 
     try {
-      const updatedArticle = await fetchUpdateArticle(id, updatedFormData);
+      const updatedArticle = await updateArticle(updatedFormData);
 
+      // Actualiza las categorías del artículo
       const existingCategories = article.categories || [];
       const newCategories = formData.categories || [];
 
@@ -114,26 +98,13 @@ export const ArticleEdit = () => {
         (catId) => !existingCategories.includes(catId)
       );
 
-      for (const catId of categoriesToRemove) {
-        await fetchUpdateArticleCategory(id, {
-          article: updatedArticle.id,
-          category: catId,
-          action: "remove",
-        });
+      if (categoriesToRemove.length > 0 || categoriesToAdd.length > 0) {
+        await updateArticleCategories(categoriesToAdd, categoriesToRemove);
       }
 
-      for (const catId of categoriesToAdd) {
-        await fetchUpdateArticleCategory(id, {
-          article: updatedArticle.id,
-          category: catId,
-          action: "add",
-        });
-      }
-
-      setSuccess("Article and categories updated successfully!");
       navigate(`/article/${id}`);
     } catch (error) {
-      setError(error.message);
+      console.error("Error updating article:", error);
     }
   };
 
