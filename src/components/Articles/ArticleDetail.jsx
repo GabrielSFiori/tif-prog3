@@ -8,6 +8,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
 import "./styles/ArticleDetail.css";
+import ViewComments from "../Comments/ViewComments";
 
 export const ArticleDetail = () => {
   const { id } = useParams();
@@ -126,6 +127,8 @@ export const ArticleDetail = () => {
             {article.reactions ? article.reactions.join(", ") : "N/A"}
           </p>
         </footer>
+
+        <ViewComments articleId={article.id} />
 
         <div className="has-text-centered">
           <button className="button is-info is-dark " onClick={handleBack}>
