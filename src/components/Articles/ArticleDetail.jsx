@@ -9,6 +9,8 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
 import "./styles/ArticleDetail.css";
 import ViewComments from "../Comments/ViewComments";
+import DeleteComments from "../Comments/DeleteComments";
+
 
 export const ArticleDetail = () => {
   const { id } = useParams();
