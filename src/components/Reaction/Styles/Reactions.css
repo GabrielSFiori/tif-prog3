@@ -1,0 +1,47 @@
+.reaction-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.reaction-list-item {
+  width: 150px;
+  margin: 10px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.reaction-name {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.reaction-description {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.reaction-icon {
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+}
+
+.reaction-button {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  border: none;
+  border-radius: 10px;
+  background-color: #4CAF50;
+  color: #fff;
+  cursor: pointer;
+}
+
+.reaction-button:hover {
+  background-color: #3e8e41;
+}

@@ -1,39 +1,34 @@
 import React, { useState, useEffect, useContext } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import {
   fetchArticleById,
   fetchCategories,
   fetchDeleteArticle,
 } from "../../hooks/ConnApi";
-import { useNavigate } from "react-router-dom";
+import { fetchCountReactions, postReaction } from "../../hooks/ConReactions";
+import Reactions from "../Reaction/Reaction";  // Asegúrate de usar `default export` en Reaction.jsx
 import { AuthContext } from "../../contexts/AuthContext";
 import "./styles/ArticleDetail.css";
 
 export const ArticleDetail = () => {
   const { id } = useParams();
   const [article, setArticle] = useState(null);
-  const [categories, setCategories] = useState([]);
   const [categoriesMap, setCategoriesMap] = useState({});
+  const [reactionCount, setReactionCount] = useState(0);
   const [error, setError] = useState(null);
   const { auth } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const handleEdit = () => {
-    navigate(`/article/edit-article/${article.id}`);
-  };
-
-  const handleDelete = async () => {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this article?"
-    );
-    if (confirmDelete) {
-      try {
-        await fetchDeleteArticle(article.id, auth.token);
-        navigate("/articles");
-      } catch (error) {
-        console.error("Error deleting article:", error);
-        setError(error.message);
-      }
+  const handleReactionClick = async (reactionType) => {
+    try {
+      const response = await postReaction(article.id, reactionType, auth.token);
+      const updatedArticle = { ...article, reactions: response.reactions };
+      setArticle(updatedArticle);
+      const { count } = await fetchCountReactions();
+      setReactionCount(count);
+    } catch (error) {
+      console.error("Error adding reaction:", error);
+      setError(error.message);
     }
   };
 
@@ -46,14 +41,14 @@ export const ArticleDetail = () => {
       try {
         const articleData = await fetchArticleById(id);
         setArticle(articleData);
-        setCategories(articleData.categories);
-
         const categoriesData = await fetchCategories();
         const categoriesMap = categoriesData.reduce((map, category) => {
           map[category.id] = category.name;
           return map;
         }, {});
         setCategoriesMap(categoriesMap);
+        const { count } = await fetchCountReactions();
+        setReactionCount(count);
       } catch (error) {
         setError(error.message);
       }
@@ -98,7 +93,6 @@ export const ArticleDetail = () => {
           style={{
             display: "-webkit-box",
             WebkitBoxOrient: "vertical",
-
             overflow: "hidden",
             textOverflow: "ellipsis",
           }}
@@ -115,17 +109,20 @@ export const ArticleDetail = () => {
         </footer>
         <footer className="card-footer">
           <p className="card-footer-item">
-            Categories:{" "}
-            {article.categories ? getCategoryNames(article.categories) : "N/A"}
+            Categories: {article.categories ? getCategoryNames(article.categories) : "N/A"}
           </p>
           <p className="card-footer-item">
             Tags: {article.tags ? article.tags.join(", ") : "N/A"}
           </p>
-          <p className="card-footer-item">
-            Reactions:{" "}
-            {article.reactions ? article.reactions.join(", ") : "N/A"}
-          </p>
         </footer>
+
+        <div className="has-text-centered mt-4">
+          <p>Total Reactions: {reactionCount}</p>
+        </div>
+
+        <div className="reactions-section">
+          <Reactions onClick={handleReactionClick} />
+        </div>
 
         <div className="has-text-centered">
           <button className="button is-info is-dark " onClick={handleBack}>
@@ -133,10 +130,21 @@ export const ArticleDetail = () => {
           </button>
           {auth.isAuthenticated && (
             <>
-              <a className="button is-info ml-4" onClick={handleEdit}>
+              <a className="button is-info ml-4" onClick={() => navigate(`/article/edit-article/${article.id}`)}>
                 Edit
               </a>
-              <a className="button is-danger ml-4" onClick={handleDelete}>
+              <a className="button is-danger ml-4" onClick={async () => {
+                const confirmDelete = window.confirm("Are you sure you want to delete this article?");
+                if (confirmDelete) {
+                  try {
+                    await fetchDeleteArticle(article.id, auth.token);
+                    navigate("/articles");
+                  } catch (error) {
+                    console.error("Error deleting article:", error);
+                    setError(error.message);
+                  }
+                }
+              }}>
                 Delete
               </a>
             </>
