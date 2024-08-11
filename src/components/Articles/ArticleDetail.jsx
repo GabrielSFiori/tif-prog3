@@ -6,9 +6,11 @@ import {
   fetchDeleteArticle,
 } from "../../hooks/ConnApi";
 import { fetchCountReactions, postReaction } from "../../hooks/ConReactions";
-import Reactions from "../Reaction/Reaction";  // Asegúrate de usar `default export` en Reaction.jsx
+import Reactions from "../Reaction/Reaction"; // Asegúrate de usar `default export` en Reaction.jsx
 import { AuthContext } from "../../contexts/AuthContext";
 import "./styles/ArticleDetail.css";
+import ViewComments from "../Comments/ViewComments";
+import DeleteComments from "../Comments/DeleteComments";
 
 export const ArticleDetail = () => {
   const { id } = useParams();
@@ -109,7 +111,8 @@ export const ArticleDetail = () => {
         </footer>
         <footer className="card-footer">
           <p className="card-footer-item">
-            Categories: {article.categories ? getCategoryNames(article.categories) : "N/A"}
+            Categories:{" "}
+            {article.categories ? getCategoryNames(article.categories) : "N/A"}
           </p>
           <p className="card-footer-item">
             Tags: {article.tags ? article.tags.join(", ") : "N/A"}
@@ -124,27 +127,37 @@ export const ArticleDetail = () => {
           <Reactions onClick={handleReactionClick} />
         </div>
 
+        <ViewComments articleId={article.id} />
+
         <div className="has-text-centered">
           <button className="button is-info is-dark " onClick={handleBack}>
             Go Back
           </button>
           {auth.isAuthenticated && (
             <>
-              <a className="button is-info ml-4" onClick={() => navigate(`/article/edit-article/${article.id}`)}>
+              <a
+                className="button is-info ml-4"
+                onClick={() => navigate(`/article/edit-article/${article.id}`)}
+              >
                 Edit
               </a>
-              <a className="button is-danger ml-4" onClick={async () => {
-                const confirmDelete = window.confirm("Are you sure you want to delete this article?");
-                if (confirmDelete) {
-                  try {
-                    await fetchDeleteArticle(article.id, auth.token);
-                    navigate("/articles");
-                  } catch (error) {
-                    console.error("Error deleting article:", error);
-                    setError(error.message);
+              <a
+                className="button is-danger ml-4"
+                onClick={async () => {
+                  const confirmDelete = window.confirm(
+                    "Are you sure you want to delete this article?"
+                  );
+                  if (confirmDelete) {
+                    try {
+                      await fetchDeleteArticle(article.id, auth.token);
+                      navigate("/articles");
+                    } catch (error) {
+                      console.error("Error deleting article:", error);
+                      setError(error.message);
+                    }
                   }
-                }
-              }}>
+                }}
+              >
                 Delete
               </a>
             </>
