@@ -12,15 +12,9 @@ const Footer = () => {
     >
       <div className="content has-text-centered">
         <p className={theme === "dark" ? "has-text-light" : "has-text-dark"}>
-          <strong>My Application</strong> by{" "}
-          <a href="https://github.com/GabrielSFiori/tif-prog3">
-            <p
-              className={theme === "dark" ? "has-text-light" : "has-text-dark"}
-            >
-              Code Collaborators
-            </p>
-          </a>
+          <strong>My Application</strong> by {"Code Collaborators"}
         </p>
+
         <p className={theme === "dark" ? "has-text-light" : "has-text-dark"}>
           <span>&#169;</span> All rights reserved.
         </p>
