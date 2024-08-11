@@ -150,15 +150,3 @@ export const ArticleDetail = () => {
     </div>
   );
 };
-
-import React, { useState, useEffect, useContext } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import {
-  fetchArticleById,
-  fetchCategories,
-  fetchDeleteArticle,
-} from "../../hooks/ConnApi";
-import { fetchCountReactions, postReaction } from "../../hooks/ConReactions";
-import Reactions from "../Reaction/Reaction"; // Asegúrate de usar `default export` en Reaction.jsx
-import { AuthContext } from "../../contexts/AuthContext";
-import "./styles/ArticleDetail.css";
