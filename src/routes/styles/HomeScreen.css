@@ -1,7 +1,7 @@
-/* Estilos comunes para el componente Home */
-
 .home-container {
   padding: 20px;
+  min-height: calc(100vh - 60px);
+  box-sizing: border-box;
 }
 
 .carousel-item {

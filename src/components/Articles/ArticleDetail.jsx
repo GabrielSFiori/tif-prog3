@@ -11,7 +11,6 @@ import "./styles/ArticleDetail.css";
 import ViewComments from "../Comments/ViewComments";
 import DeleteComments from "../Comments/DeleteComments";
 
-
 export const ArticleDetail = () => {
   const { id } = useParams();
   const [article, setArticle] = useState(null);

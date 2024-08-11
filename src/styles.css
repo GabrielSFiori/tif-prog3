@@ -204,3 +204,11 @@ body.dark-mode .title {
   text-align: center;
   padding: 0.75rem;
 }
+
+.footer {
+  background: linear-gradient(270deg, #93c764, #4eb6e6);
+}
+
+.dark-mode .footer {
+  background: rgba(34, 193, 195, 0.1);
+}
