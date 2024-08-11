@@ -12,6 +12,8 @@ import { ArticleEdit } from "./components/Articles/ArticleEdit";
 import { Profile } from "./components/Profile/Profiles";
 import { ProfileDetail } from "./components/Profile/ProfileDetail";
 import "./styles.css";
+import "./components/Footer.css";
+import Footer from "./components/Footer";
 import { EditProfile } from "./components/Profile/ProfilesEdit";
 
 const ProtectedRoute = ({ children }) => {
@@ -22,34 +24,40 @@ const ProtectedRoute = ({ children }) => {
 export const App = () => {
   return (
     <AuthProvider>
-      <NavBar />
-      <Routes>
-        <Route path="/" element={<HomeScreen />} />
-        <Route path="/about" element={<AboutScreen />} />
-        <Route path="/articles" element={<Articles />} />
-        <Route path="/article/:id" element={<ArticleDetail />} />
-        <Route
-          path="/article/edit-article/:id"
-          element={<ArticleEdit />}
-        />{" "}
-        <Route
-          path="/article/new-article"
-          element={
-            <ProtectedRoute>
-              <NewArticle />
-            </ProtectedRoute>
-          }
-        />
-        <Route path="/contact" element={<ContactScreen />} />
-        <Route path="/users/profiles" element={<Profile />} />
-        <Route
-          path="/users/profiles/profile_data"
-          element={<ProfileDetail />}
-        />
-        <Route path="/users/profiles/:userId" element={<EditProfile />} />{" "}
-        <Route path="/users/profiles/login" element={<Login />} />
-        <Route path="*" element={<Navigate to="/" />} />
-      </Routes>
+      <div className="app">
+        <header>
+          <NavBar />
+        </header>
+        <main>
+          <Routes>
+            <Route path="/" element={<HomeScreen />} />
+            <Route path="/about" element={<AboutScreen />} />
+            <Route path="/articles" element={<Articles />} />
+            <Route path="/article/:id" element={<ArticleDetail />} />
+            <Route path="/article/edit-article/:id" element={<ArticleEdit />} />
+            <Route
+              path="/article/new-article"
+              element={
+                <ProtectedRoute>
+                  <NewArticle />
+                </ProtectedRoute>
+              }
+            />
+            <Route path="/contact" element={<ContactScreen />} />
+            <Route path="/users/profiles" element={<Profile />} />
+            <Route
+              path="/users/profiles/profile_data"
+              element={<ProfileDetail />}
+            />
+            <Route path="/users/profiles/:userId" element={<EditProfile />} />
+            <Route path="/users/profiles/login" element={<Login />} />
+            <Route path="*" element={<Navigate to="/" />} />
+          </Routes>
+        </main>
+        <footer>
+          <Footer />
+        </footer>
+      </div>
     </AuthProvider>
   );
 };
