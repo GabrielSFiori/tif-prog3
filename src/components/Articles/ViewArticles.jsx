@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./styles/ArticleDetail.css";
+import { SearchAndSort } from "../SearchAndSort/SearchAndSort";
+import NotFoundPage from "../NotFound404/NotFoundPage";
 
 export const ViewArticles = ({
   articles,
@@ -12,17 +14,69 @@ export const ViewArticles = ({
   totalCount,
   currentPage,
 }) => {
+  const [filteredArticles, setFilteredArticles] = useState([]);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (articles) {
+      setFilteredArticles(articles);
+      setError(null);
+    } else {
+      setError("No se encontraron artículos.");
+    }
+  }, [articles]);
 
   const handleReadMore = (articleId) => {
     navigate(`/article/${articleId}`);
   };
 
+  const onSearch = async ({ title, categories, ordering }) => {
+    try {
+      const queryParams = {
+        title: title || "",
+        categories: categories || "",
+        ordering: ordering || "",
+        page: currentPage,
+        page_size: 10,
+      };
+
+      const query = new URLSearchParams(queryParams).toString();
+      const url = `https://sandbox.academiadevelopers.com/infosphere/articles/?${query}`;
+
+      const response = await fetch(url);
+
+      if (response.status === 404) {
+        setError("No se encontraron artículos.");
+        setFilteredArticles([]);
+        return;
+      }
+
+      if (!response.ok) {
+        const errorDetails = await response.text();
+        throw new Error(`Network response was not ok: ${errorDetails}`);
+      }
+
+      const data = await response.json();
+      setFilteredArticles(data.results || []);
+      setError(null);
+    } catch (error) {
+      console.error("Error fetching articles:", error);
+      setFilteredArticles([]);
+      setError("Error al obtener los artículos.");
+    }
+  };
+
+  if (error) {
+    return <NotFoundPage />;
+  }
+
   return (
     <div className="container background">
+      <SearchAndSort categoriesMap={categoriesMap} onSearch={onSearch} />
       <div className="columns is-multiline">
-        {articles.length > 0 ? (
-          articles.map((article) => (
+        {filteredArticles.length > 0 ? (
+          filteredArticles.map((article) => (
             <div className="column is-one-third" key={article.id}>
               <div className="card">
                 <header className="card-header">

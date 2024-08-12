@@ -212,3 +212,35 @@ body.dark-mode .title {
 .dark-mode .footer {
   background: rgba(34, 193, 195, 0.1);
 }
+
+.light-mode .caja-comentarios {
+  background: linear-gradient(270deg, #93c764, #4eb6e6);
+}
+
+.dark-mode .caja-comentarios {
+  background: rgba(34, 193, 195, 0.1);
+}
+
+.light-mode main {
+  background: #4fb2d5;
+  background: radial-gradient(at center, #4fb2d5, #db5a57);
+}
+
+.light-mode .box {
+  background: #96c5ac;
+  background: radial-gradient(at center, #96c5ac, #777dce);
+}
+.light-mode input {
+  background-color: #444;
+}
+.dark-mode .box {
+  background-color: #333333;
+}
+
+.light-mode .label {
+  color: #000000;
+}
+
+.dark-mode .label {
+  color: #ffffff;
+}

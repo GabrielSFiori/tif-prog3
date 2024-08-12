@@ -128,8 +128,9 @@ export const ArticleDetail = () => {
             {article.reactions ? article.reactions.join(", ") : "N/A"}
           </p>
         </footer>
-
-        <ViewComments articleId={article.id} />
+        <div className="container caja-comentarios">
+          <ViewComments articleId={article.id} />
+        </div>
 
         <div className="has-text-centered">
           <button className="button is-info is-dark " onClick={handleBack}>
