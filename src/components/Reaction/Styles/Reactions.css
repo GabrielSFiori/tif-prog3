@@ -11,6 +11,7 @@
   border: 1px solid #ddd;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: center; /* nuevo */
 }
 
 .reaction-name {
@@ -40,8 +41,11 @@
   background-color: #4CAF50;
   color: #fff;
   cursor: pointer;
+  display: inline-block;
+  text-align: center; 
 }
 
 .reaction-button:hover {
   background-color: #3e8e41;
 }
+
