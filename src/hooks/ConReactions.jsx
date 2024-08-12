@@ -83,27 +83,3 @@ export const deleteReaction = async (articleId, reactionId, token, userId) => {
     throw error;
   }
 }
-
-
-export const deleteReaction = async (articleId, reactionId, token, userId) => {
-  try {
-    const response = await fetch(`https://sandbox.academiadevelopers.com/infosphere/articles/${articleId}/reactions/${reactionId}/`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token ? `Token ${token}` : "",
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error(`Error al eliminar la reacción: ${response.status} ${response.statusText}`);
-    }
-
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error("Error deleting reaction:", error);
-    throw error;
-  }
-}
-

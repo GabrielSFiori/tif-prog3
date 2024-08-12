@@ -10,7 +10,7 @@ import { AuthContext } from "../../contexts/AuthContext";
 import "./styles/ArticleDetail.css";
 import ViewComments from "../Comments/ViewComments";
 import DeleteComments from "../Comments/DeleteComments";
-
+import Reactions from "../Reaction/Reaction";
 export const ArticleDetail = () => {
   const { id } = useParams();
   const [article, setArticle] = useState(null);
@@ -41,6 +41,19 @@ export const ArticleDetail = () => {
 
   const handleBack = () => {
     navigate("/articles");
+  };
+
+  const handleReactionClick = async (reactionType) => {
+    try {
+      const response = await postReaction(article.id, reactionType, auth.token);
+      const updatedArticle = { ...article, reactions: response.reactions };
+      setArticle(updatedArticle);
+      const { count } = await fetchCountReactions();
+      setReactionCount(count);
+    } catch (error) {
+      console.error("Error adding reaction:", error);
+      setError(error.message);
+    }
   };
 
   useEffect(() => {
@@ -128,9 +141,11 @@ export const ArticleDetail = () => {
             {article.reactions ? article.reactions.join(", ") : "N/A"}
           </p>
         </footer>
-        <div className="container caja-comentarios">
-          <ViewComments articleId={article.id} />
-        </div>
+          <div className="reactions-section">
+            <Reactions onClick={handleReactionClick} />
+          </div>
+
+        <ViewComments articleId={article.id} />
 
         <div className="has-text-centered">
           <button className="button is-info is-dark " onClick={handleBack}>
