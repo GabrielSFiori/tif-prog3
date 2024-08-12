@@ -1,0 +1,25 @@
+.not-found-container {
+  text-align: center;
+  padding: 50px;
+}
+
+.not-found-image {
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 20px;
+}
+
+.not-found-message {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.not-found-description {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+}
+
+.button.is-primary {
+  background-color: #00d1b2;
+  color: white;
+}
